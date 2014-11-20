@@ -79,11 +79,6 @@ public final class InCallController extends CallsManagerListenerBase {
         }
 
         @Override
-        public void onCallPropertiesChanged(Call call) {
-            updateCall(call);
-        }
-
-        @Override
         public void onCannedSmsResponsesLoaded(Call call) {
             updateCall(call);
         }
@@ -443,10 +438,7 @@ public final class InCallController extends CallsManagerListenerBase {
             capabilities &= ~PhoneCapabilities.ADD_CALL;
         }
 
-        int properties = call.getCallProperties();
-        if (call.isConference()) {
-            properties |= CallProperties.CONFERENCE;
-        }
+        int properties = call.isConference() ? CallProperties.CONFERENCE : 0;
 
         int state = call.getState();
         if (state == CallState.ABORTED) {
@@ -515,6 +507,8 @@ public final class InCallController extends CallsManagerListenerBase {
                 call.getVideoState(),
                 conferenceableCallIds,
                 call.getExtras(),
+                call.getNotificationType(),
+                call.getNotificationCode(),
                 call.mIsActiveSub);
     }
 
