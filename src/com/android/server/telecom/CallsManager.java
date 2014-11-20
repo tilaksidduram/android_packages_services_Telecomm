@@ -906,6 +906,7 @@ public final class CallsManager extends Call.ListenerBase {
         removeCall(call);
         if (!hasAnyCalls()) {
             updateLchStatus(null);
+            setActiveSubscription(null);
             manageMSimInCallTones(false);
         }
     }
@@ -1599,6 +1600,8 @@ public final class CallsManager extends Call.ListenerBase {
             } else if (subId != null && !subId.equals(ph.getId())
                         && phAcc.isSet(PhoneAccount.ACTIVE)) {
                 changed = true;
+                phAcc.unSetBit(PhoneAccount.ACTIVE);
+            } else if (subId == null && phAcc.isSet(PhoneAccount.ACTIVE)) {
                 phAcc.unSetBit(PhoneAccount.ACTIVE);
             }
         }
